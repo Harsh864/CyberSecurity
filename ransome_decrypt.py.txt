@@ -1,0 +1,20 @@
+import os
+from cryptography.fernet import Fernet
+
+files = []
+
+for file in os.listdir():
+        if file == "ransomeware.py" or file == "ransomeware_decrypt.py" or file == "key.txt":
+                continue
+        if os.path.isfile(file):
+                files.append(file)
+keys = ""
+with open("key.txt","rb") as f:
+        keys = f.read()
+
+for file in files:
+        with open(file,"rb") as f:
+                text = f.read()    
+        decrypt_text = Fernet(keys).decrypt(text)
+        with open(file,"wb") as f: 
+                f.write(decrypt_text)
